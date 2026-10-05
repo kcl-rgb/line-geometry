@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Guide: Perpendicular & Parallel Lines (A1A2 = -B1B2)</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- KaTeX for rapid, crisp mathematical typesetting -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .font-mono-code {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    /* Smooth animated transitions */
+    .tab-btn.active {
+      background-color: #4f46e5;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased selection:bg-indigo-100 selection:text-indigo-900">
+
+  <!-- Top Navigation Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs backdrop-blur-md bg-white/95">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-extrabold text-xl shadow-md shadow-indigo-200">
+          $\perp$
+        </div>
+        <div>
+          <h1 class="text-base sm:text-lg font-bold text-slate-900 leading-tight">
+            Line Geometry Academy
+          </h1>
+          <p class="text-xs text-slate-500 font-medium hidden sm:block">
+            Student Interactive Guide: $L_1 \perp L_2 \iff A_1A_2 = -B_1B_2$
+          </p>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="flex items-center space-x-1.5 p-1 bg-slate-100 rounded-xl text-xs sm:text-sm font-semibold text-slate-600">
+        <button onclick="switchTab('lab')" id="tab-lab-btn" class="tab-btn active px-3 sm:px-4 py-1.5 rounded-lg transition-all">
+          Interactive Lab
+        </button>
+        <button onclick="switchTab('rules')" id="tab-rules-btn" class="tab-btn px-3 sm:px-4 py-1.5 rounded-lg transition-all">
+          The 3 Rules & Proof
+        </button>
+        <button onclick="switchTab('quiz')" id="tab-quiz-btn" class="tab-btn px-3 sm:px-4 py-1.5 rounded-lg transition-all">
+          Practice Quiz ✏️
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-6">
+
+    <!-- Welcome & Student Instructions Banner -->
+    <div class="bg-gradient-to-r from-indigo-700 via-indigo-600 to-violet-700 rounded-2xl p-5 sm:p-6 text-white shadow-lg relative overflow-hidden">
+      <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+      <div class="relative z-10 max-w-3xl">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/20 text-white text-xs font-semibold backdrop-blur-md mb-2">
+          👋 Student Learning Portal
+        </span>
+        <h2 class="text-xl sm:text-2xl font-bold">How Do Two Straight Lines Relate in the Cartesian Plane?</h2>
+        <p class="text-indigo-100 text-xs sm:text-sm mt-1.5 leading-relaxed">
+          Given two general linear equations $L_1: A_1x + B_1y + C_1 = 0$ and $L_2: A_2x + B_2y + C_2 = 0$, you can instantly tell if they are 
+          <strong>Perpendicular ($90^\circ$)</strong>, <strong>Parallel</strong>, or <strong>Coincident</strong> without ever having to draw them by checking simple relations between their coefficients!
+        </p>
+      </div>
+    </div>
+
+    <!-- SECTION 1: INTERACTIVE LABORATORY -->
+    <div id="section-lab" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- LEFT: Dynamic Graph Visualizer (7 cols) -->
+      <div class="lg:col-span-7 flex flex-col gap-4">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex flex-col">
+          
+          <div class="flex items-center justify-between mb-3">
+            <div>
+              <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-emerald-500 animate-ping"></span>
+                Live Coordinate Plane
+              </h3>
+              <p class="text-xs text-slate-500">Notice how changing the sliders updates the lines and checks $A_1A_2 = -B_1B_2$</p>
+            </div>
+            <div id="statusBadge" class="px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+              Perpendicular (90°)
+            </div>
+          </div>
+
+          <!-- Canvas Container -->
+          <div class="relative w-full aspect-square max-h-[460px] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 shadow-inner flex items-center justify-center">
+            <canvas id="lineCanvas" class="w-full h-full block cursor-crosshair"></canvas>
+            
+            <!-- Axis Tag -->
+            <div class="absolute bottom-3 left-3 text-[11px] text-slate-400 bg-slate-900/80 px-2 py-0.5 rounded font-mono border border-slate-800">
+              Grid $[-6, +6]$
+            </div>
+
+            <!-- Legend Overlay -->
+            <div class="absolute top-3 right-3 flex flex-col items-end gap-1.5 text-xs font-mono">
+              <span class="bg-slate-900/90 text-sky-400 font-bold px-2.5 py-1 rounded border border-sky-800/60 shadow">
+                Line 1 (L₁)
+              </span>
+              <span class="bg-slate-900/90 text-rose-400 font-bold px-2.5 py-1 rounded border border-rose-800/60 shadow">
+                Line 2 (L₂)
+              </span>
+            </div>
+          </div>
+
+          <!-- Live Evaluation Card -->
+          <div class="mt-4 p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider">
+              Perpendicular Verification ($A_1A_2 = -B_1B_2$)
+            </div>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-center text-xs">
+              <div class="bg-white p-2.5 rounded-lg border border-slate-200">
+                <span class="text-slate-500 block text-[11px]">Product $A_1 \cdot A_2$</span>
+                <span id="statA1A2" class="text-base font-bold font-mono text-slate-900">2.00</span>
+              </div>
+              <div class="bg-white p-2.5 rounded-lg border border-slate-200">
+                <span class="text-slate-500 block text-[11px]">Opposite $-(B_1 \cdot B_2)$</span>
+                <span id="statNegB1B2" class="text-base font-bold font-mono text-slate-900">2.00</span>
+              </div>
+              <div class="col-span-2 sm:col-span-1 bg-white p-2.5 rounded-lg border border-slate-200">
+                <span class="text-slate-500 block text-[11px]">Sum $A_1A_2 + B_1B_2$</span>
+                <span id="statSum" class="text-base font-bold font-mono text-emerald-600">0.00</span>
+              </div>
+            </div>
+
+            <div id="verdictBanner" class="p-3 rounded-lg bg-emerald-50 border border-emerald-200 text-xs font-semibold text-emerald-900 flex items-center justify-between">
+              <span id="verdictText">🎉 Excellent! $A_1A_2 = -B_1B_2$ holds true! The two lines are exactly perpendicular ($90^\circ$).</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- RIGHT: Interactive Controls & Presets (5 cols) -->
+      <div class="lg:col-span-5 flex flex-col gap-4">
+        
+        <!-- Preset Quick Jump -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4">
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2.5">
+            Quick Exploration Presets
+          </label>
+          <div class="grid grid-cols-3 gap-2">
+            <button onclick="applyPreset('perpendicular')" class="px-2.5 py-2 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-bold hover:bg-indigo-100 transition text-center shadow-xs">
+              ⚡ Perpendicular
+            </button>
+            <button onclick="applyPreset('parallel')" class="px-2.5 py-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold hover:bg-amber-100 transition text-center shadow-xs">
+              ⏸ Parallel
+            </button>
+            <button onclick="applyPreset('coincident')" class="px-2.5 py-2 rounded-xl bg-teal-50 border border-teal-200 text-teal-800 text-xs font-bold hover:bg-teal-100 transition text-center shadow-xs">
+              🔗 Coincident
+            </button>
+          </div>
+        </div>
+
+        <!-- Slider Panels -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-5">
+          
+          <!-- Line 1 Controls (Cyan) -->
+          <div class="p-4 rounded-xl bg-sky-50/60 border border-sky-200 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-sky-900 font-mono" id="labelEq1">
+                L₁: 2x - 1y - 1 = 0
+              </span>
+              <span class="text-xs font-semibold px-2 py-0.5 rounded bg-sky-100 text-sky-800" id="slopeVal1">
+                Slope m₁ = 2.00
+              </span>
+            </div>
+            
+            <div class="space-y-2 text-xs">
+              <div>
+                <div class="flex justify-between font-mono text-slate-600 mb-0.5">
+                  <span>A₁ (x-coefficient): <strong id="dispA1" class="text-sky-900">2</strong></span>
+                </div>
+                <input type="range" id="inputA1" min="-6" max="6" step="1" value="2" class="w-full accent-sky-600">
+              </div>
+
+              <div>
+                <div class="flex justify-between font-mono text-slate-600 mb-0.5">
+                  <span>B₁ (y-coefficient): <strong id="dispB1" class="text-sky-900">-1</strong></span>
+                </div>
+                <input type="range" id="inputB1" min="-6" max="6" step="1" value="-1" class="w-full accent-sky-600">
+              </div>
+
+              <div>
+                <div class="flex justify-between font-mono text-slate-600 mb-0.5">
+                  <span>C₁ (constant term): <strong id="dispC1" class="text-sky-900">-1</strong></span>
+                </div>
+                <input type="range" id="inputC1" min="-6" max="6" step="1" value="-1" class="w-full accent-sky-600">
+              </div>
+            </div>
+          </div>
+
+          <!-- Line 2 Controls (Rose) -->
+          <div class="p-4 rounded-xl bg-rose-50/60 border border-rose-200 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-rose-900 font-mono" id="labelEq2">
+                L₂: 1x + 2y - 2 = 0
+              </span>
+              <span class="text-xs font-semibold px-2 py-0.5 rounded bg-rose-100 text-rose-800" id="slopeVal2">
+                Slope m₂ = -0.50
+              </span>
+            </div>
+            
+            <div class="space-y-2 text-xs">
+              <div>
+                <div class="flex justify-between font-mono text-slate-600 mb-0.5">
+                  <span>A₂ (x-coefficient): <strong id="dispA2" class="text-rose-900">1</strong></span>
+                </div>
+                <input type="range" id="inputA2" min="-6" max="6" step="1" value="1" class="w-full accent-rose-600">
+              </div>
+
+              <div>
+                <div class="flex justify-between font-mono text-slate-600 mb-0.5">
+                  <span>B₂ (y-coefficient): <strong id="dispB2" class="text-rose-900">2</strong></span>
+                </div>
+                <input type="range" id="inputB2" min="-6" max="6" step="1" value="2" class="w-full accent-rose-600">
+              </div>
+
+              <div>
+                <div class="flex justify-between font-mono text-slate-600 mb-0.5">
+                  <span>C₂ (constant term): <strong id="dispC2" class="text-rose-900">-2</strong></span>
+                </div>
+                <input type="range" id="inputC2" min="-6" max="6" step="1" value="-2" class="w-full accent-rose-600">
+              </div>
+            </div>
+          </div>
+
+          <!-- Auto Perpendicular Snap -->
+          <button onclick="autoPerpendicularSnap()" class="w-full py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition shadow-sm shadow-indigo-200 flex items-center justify-center gap-2">
+            <span>✨ Automatically Make L₂ Perpendicular to L₁</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- SECTION 2: THE 3 RULES & STEP-BY-STEP PROOF -->
+    <div id="section-rules" class="hidden space-y-6">
+
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+        <div class="border-b border-slate-200 pb-4 mb-6">
+          <span class="text-xs uppercase tracking-widest font-bold text-indigo-600">Reference Textbook Material</span>
+          <h2 class="text-2xl font-bold text-slate-900 mt-1">The Three Fundamental Relationships for Two Straight Lines</h2>
+          <p class="text-sm text-slate-500 mt-1">
+            Let two straight lines in standard Cartesian form be:
+            $L_1: A_1x + B_1y + C_1 = 0$ and $L_2: A_2x + B_2y + C_2 = 0$.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <!-- Card 1: Perpendicular -->
+          <div class="bg-gradient-to-b from-indigo-50/70 to-white p-5 rounded-2xl border-2 border-indigo-200 flex flex-col justify-between">
+            <div>
+              <div class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-sm mb-3">
+                1
+              </div>
+              <h3 class="text-lg font-bold text-indigo-950">Perpendicular Lines ($L_1 \perp L_2$)</h3>
+              <p class="text-xs text-indigo-800 font-medium mb-3">Angle $\theta = 90^\circ$</p>
+              
+              <div class="bg-white p-3 rounded-xl border border-indigo-200 text-center my-3 shadow-xs">
+                <span class="text-base sm:text-lg font-bold text-indigo-900 font-mono-code block">
+                  $A_1A_2 = -B_1B_2$
+                </span>
+                <span class="text-xs text-indigo-600 font-semibold mt-1 block">
+                  or $A_1A_2 + B_1B_2 = 0$
+                </span>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                The product of their slopes is $-1$:
+                $$m_1 \cdot m_2 = -1$$
+                Converting to Cartesian form avoids division by zero for vertical lines!
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-indigo-100 text-[11px] text-indigo-700 font-semibold">
+              ✓ Intersects at an exact $90^\circ$ angle
+            </div>
+          </div>
+
+          <!-- Card 2: Parallel -->
+          <div class="bg-gradient-to-b from-amber-50/70 to-white p-5 rounded-2xl border-2 border-amber-200 flex flex-col justify-between">
+            <div>
+              <div class="w-8 h-8 rounded-lg bg-amber-600 text-white flex items-center justify-center font-bold text-sm mb-3">
+                2
+              </div>
+              <h3 class="text-lg font-bold text-amber-950">Parallel Lines ($L_1 \parallel L_2$)</h3>
+              <p class="text-xs text-amber-800 font-medium mb-3">Example 4.18(b) &bull; No Intersections</p>
+              
+              <div class="bg-white p-3 rounded-xl border border-amber-200 text-center my-3 shadow-xs">
+                <span class="text-base sm:text-lg font-bold text-amber-950 font-mono-code block">
+                  $$\frac{A_1}{A_2} = \frac{B_1}{B_2} \neq \frac{C_1}{C_2}$$
+                </span>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                The lines have identical slopes ($m_1 = m_2$) but different $y$-intercepts. Hence they never meet in the plane.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-amber-100 text-[11px] text-amber-700 font-semibold">
+              ✓ Exactly 0 points of intersection
+            </div>
+          </div>
+
+          <!-- Card 3: Coincident -->
+          <div class="bg-gradient-to-b from-teal-50/70 to-white p-5 rounded-2xl border-2 border-teal-200 flex flex-col justify-between">
+            <div>
+              <div class="w-8 h-8 rounded-lg bg-teal-600 text-white flex items-center justify-center font-bold text-sm mb-3">
+                3
+              </div>
+              <h3 class="text-lg font-bold text-teal-950">Coincident Lines</h3>
+              <p class="text-xs text-teal-800 font-medium mb-3">Example 4.18(c) &bull; Identical Lines</p>
+              
+              <div class="bg-white p-3 rounded-xl border border-teal-200 text-center my-3 shadow-xs">
+                <span class="text-base sm:text-lg font-bold text-teal-950 font-mono-code block">
+                  $$\frac{A_1}{A_2} = \frac{B_1}{B_2} = \frac{C_1}{C_2}$$
+                </span>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                One equation is simply a non-zero multiple of the other. Every single point on $L_1$ also lies on $L_2$.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-teal-100 text-[11px] text-teal-700 font-semibold">
+              ✓ Infinitely many points of intersection
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Step-by-Step Derivation (Zero Vectors) -->
+        <div class="mt-8 bg-slate-50 rounded-2xl border border-slate-200 p-6 space-y-4">
+          <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+            📖 Step-by-Step Proof of the Perpendicular Condition ($A_1A_2 = -B_1B_2$)
+          </h3>
+          <p class="text-xs sm:text-sm text-slate-600">
+            Here is the complete derivation using only elementary Cartesian coordinate algebra (no vectors):
+          </p>
+
+          <div class="space-y-3 text-xs sm:text-sm text-slate-700 font-sans">
+            <div class="p-3.5 bg-white rounded-xl border border-slate-200">
+              <strong class="text-indigo-600 block mb-1">Step 1: Convert to Slope-Intercept Form ($y = mx + c$)</strong>
+              For line $L_1$:
+              $$A_1x + B_1y + C_1 = 0 \implies B_1y = -A_1x - C_1 \implies y = \left(-\frac{A_1}{B_1}\right)x - \frac{C_1}{B_1}$$
+              Thus, the slope of $L_1$ is:
+              $$m_1 = -\frac{A_1}{B_1}$$
+              Similarly for line $L_2$:
+              $$A_2x + B_2y + C_2 = 0 \implies m_2 = -\frac{A_2}{B_2}$$
+            </div>
+
+            <div class="p-3.5 bg-white rounded-xl border border-slate-200">
+              <strong class="text-indigo-600 block mb-1">Step 2: Apply the Perpendicular Slope Theorem</strong>
+              Two non-vertical lines are perpendicular if and only if their slopes multiply to $-1$:
+              $$m_1 \cdot m_2 = -1$$
+              Substitute our slope expressions:
+              $$\left(-\frac{A_1}{B_1}\right) \cdot \left(-\frac{A_2}{B_2}\right) = -1$$
+              Since $(-1) \cdot (-1) = 1$:
+              $$\frac{A_1A_2}{B_1B_2} = -1$$
+            </div>
+
+            <div class="p-3.5 bg-white rounded-xl border border-slate-200">
+              <strong class="text-indigo-600 block mb-1">Step 3: Multiply Both Sides by $B_1B_2$</strong>
+              $$A_1A_2 = -B_1B_2 \iff A_1A_2 + B_1B_2 = 0$$
+              <span class="inline-block mt-2 font-semibold text-emerald-800 bg-emerald-50 px-3 py-1 rounded-md border border-emerald-200">
+                Q.E.D. — Notice that $A_1A_2 + B_1B_2 = 0$ remains completely valid even if one line is vertical ($B_1=0$) and the other is horizontal ($A_2=0$)!
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- SECTION 3: PRACTICE QUIZ FOR STUDENTS -->
+    <div id="section-quiz" class="hidden space-y-6">
+
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-200 gap-3">
+          <div>
+            <span class="text-xs uppercase tracking-widest font-bold text-indigo-600">Test Your Understanding</span>
+            <h2 class="text-2xl font-bold text-slate-900 mt-1">Interactive Self-Check Quiz</h2>
+            <p class="text-xs sm:text-sm text-slate-500">Solve the problems below. Your score updates instantly!</p>
+          </div>
+          <div class="flex items-center gap-3 bg-indigo-50 px-4 py-2 rounded-xl border border-indigo-200">
+            <span class="text-xs font-bold text-indigo-900">Your Score:</span>
+            <span id="quizScore" class="text-lg font-extrabold text-indigo-600 font-mono">0 / 4</span>
+          </div>
+        </div>
+
+        <div class="mt-6 space-y-6" id="quizContainer">
+
+          <!-- Question 1 -->
+          <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3" id="q1Box">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Question 1</span>
+              <span id="q1Status" class="text-xs font-bold text-slate-400">Not Answered</span>
+            </div>
+            <p class="text-sm font-semibold text-slate-800">
+              The line $L_1: 3x - 4y + 7 = 0$ is perpendicular to $L_2: kx + 6y - 1 = 0$. What is the value of $k$?
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-medium">
+              <button onclick="checkAnswer(1, 'A', this)" class="q-opt-1 p-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-left transition">
+                A) $k = 8$
+              </button>
+              <button onclick="checkAnswer(1, 'B', this)" class="q-opt-1 p-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-left transition">
+                B) $k = -8$
+              </button>
+              <button onclick="checkAnswer(1, 'C', this)" class="q-opt-1 p-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-left transition">
+                C) $k = 4.5$
+              </button>
+              <button onclick="checkAnswer(1, 'D', this)" class="q-opt-1 p-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-left transition">
+                D) $k = -4.5$
+              </button>
+            </div>
+            <div id="q1Explain" class="hidden p-3 rounded-lg text-xs leading-relaxed"></div>
+          </div>
+
+          <!-- Question 2 -->
+          <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3" id="q2Box">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Question 2</span>
+              <span id="q2Status" class="text-xs font-bold text-slate-400">Not Answered</span>
+            </div>
+            <p class="text-sm font-semibold text-slate-800">
+              Two lines are given by $2x + 5y - 3 = 0$ and $4x + 10y + 9 = 0$. What is their relationship?
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-medium">
+              <button onclick="checkAnswer(2, 'A', this)" class="q-opt-2 p-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-left transition">
+                A) Perpendicular ($L_1 \perp L_2$)
+              </button>
+              <button onclick="checkAnswer(2, 'B', this)" class="q-opt-2 p-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-left transition">
+                B) Parallel ($L_1 \parallel L_2$, No intersection)
+              </button>
+              <button onclick="checkAnswer(2, 'C', this)" class="q-opt-2 p-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-left transition">
+                C) Coincident (Infinitely many intersections)
+              </button>
+              <button onclick="checkAnswer(2, 'D', this)" class="q-opt-2 p-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-left transition">
+                D) Intersecting at an acute angle of $45^\circ$
+              </button>
+            </div>
+            <div id="q2Explain" class="hidden p-3 rounded-lg text-xs leading-relaxed"></div>
+          </div>
+
+          <!-- Question 3 -->
+          <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3" id="q3Box">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Question 3</span>
+              <span id="q3Status" class="text-xs font-bold text-slate-400">Not Answered</span>
+            </div>
+            <p class="text-sm font-semibold text-slate-800">
+              Which condition proves that two lines $L_1$ and $L_2$ have <em>infinitely many</em> points of intersection (i.e., they are coincident)?
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-medium">
+              <button onclick="checkAnswer(3, 'A', this)" class="q-opt-3 p-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-left transition">
+                A) $A_1A_2 + B_1B_2 = 0$
+              </button>
+              <button onclick="checkAnswer(3, 'B', this)" class="q-opt-3 p-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-left transition">
+                B) $\frac{A_1}{A_2} = \frac{B_1}{B_2} \neq \frac{C_1}{C_2}$
+              </button>
+              <button onclick="checkAnswer(3, 'C', this)" class="q-opt-3 p-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-left transition">
+                C) $\frac{A_1}{A_2} = \frac{B_1}{B_2} = \frac{C_1}{C_2}$
+              </button>
+              <button onclick="checkAnswer(3, 'D', this)" class="q-opt-3 p-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-left transition">
+                D) $m_1 \cdot m_2 = 1$
+              </button>
+            </div>
+            <div id="q3Explain" class="hidden p-3 rounded-lg text-xs leading-relaxed"></div>
+          </div>
+
+          <!-- Question 4 -->
+          <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3" id="q4Box">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Question 4</span>
+              <span id="q4Status" class="text-xs font-bold text-slate-400">Not Answered</span>
+            </div>
+            <p class="text-sm font-semibold text-slate-800">
+              For a line with equation $5x - 2y + 8 = 0$, what is the slope of any straight line perpendicular to it?
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-medium">
+              <button onclick="checkAnswer(4, 'A', this)" class="q-opt-4 p-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-left transition">
+                A) $m = \frac{5}{2}$
+              </button>
+              <button onclick="checkAnswer(4, 'B', this)" class="q-opt-4 p-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-left transition">
+                B) $m = -\frac{2}{5}$
+              </button>
+              <button onclick="checkAnswer(4, 'C', this)" class="q-opt-4 p-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-left transition">
+                C) $m = \frac{2}{5}$
+              </button>
+              <button onclick="checkAnswer(4, 'D', this)" class="q-opt-4 p-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-left transition">
+                D) $m = -\frac{5}{2}$
+              </button>
+            </div>
+            <div id="q4Explain" class="hidden p-3 rounded-lg text-xs leading-relaxed"></div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer class="bg-white border-t border-slate-200 py-6 mt-12 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <span>Designed for Classroom Teaching & Independent Student Study</span>
+      <span class="font-mono text-indigo-600 font-semibold">$L_1 \perp L_2 \iff A_1A_2 = -B_1B_2 \iff A_1A_2 + B_1B_2 = 0$</span>
+    </div>
+  </footer>
+
+  <script>
+    // State management for both straight lines
+    const state = {
+      l1: { A: 2, B: -1, C: -1 },
+      l2: { A: 1, B: 2, C: -2 }
+    };
+
+    const canvas = document.getElementById('lineCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // DOM Elements
+    const inputA1 = document.getElementById('inputA1');
+    const inputB1 = document.getElementById('inputB1');
+    const inputC1 = document.getElementById('inputC1');
+    const inputA2 = document.getElementById('inputA2');
+    const inputB2 = document.getElementById('inputB2');
+    const inputC2 = document.getElementById('inputC2');
+
+    const dispA1 = document.getElementById('dispA1');
+    const dispB1 = document.getElementById('dispB1');
+    const dispC1 = document.getElementById('dispC1');
+    const dispA2 = document.getElementById('dispA2');
+    const dispB2 = document.getElementById('dispB2');
+    const dispC2 = document.getElementById('dispC2');
+
+    const labelEq1 = document.getElementById('labelEq1');
+    const labelEq2 = document.getElementById('labelEq2');
+    const slopeVal1 = document.getElementById('slopeVal1');
+    const slopeVal2 = document.getElementById('slopeVal2');
+
+    const statA1A2 = document.getElementById('statA1A2');
+    const statNegB1B2 = document.getElementById('statNegB1B2');
+    const statSum = document.getElementById('statSum');
+    const statusBadge = document.getElementById('statusBadge');
+    const verdictBanner = document.getElementById('verdictBanner');
+    const verdictText = document.getElementById('verdictText');
+
+    // Tab switching logic
+    window.switchTab = function(tabName) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(`tab-${tabName}-btn`).classList.add('active');
+
+      document.getElementById('section-lab').classList.toggle('hidden', tabName !== 'lab');
+      document.getElementById('section-rules').classList.toggle('hidden', tabName !== 'rules');
+      document.getElementById('section-quiz').classList.toggle('hidden', tabName !== 'quiz');
+
+      if (tabName === 'lab') {
+        resizeCanvas();
+      }
+    };
+
+    // Format equation string: Ax + By + C = 0
+    function formatEquation(A, B, C) {
+      let str = "";
+      if (A !== 0) str += `${A}x `;
+      if (B > 0) str += (str ? `+ ${B}y ` : `${B}y `);
+      else if (B < 0) str += (str ? `- ${Math.abs(B)}y ` : `-${Math.abs(B)}y `);
+
+      if (C > 0) str += `+ ${C} = 0`;
+      else if (C < 0) str += `- ${Math.abs(C)} = 0`;
+      else str += `= 0`;
+      return str;
+    }
+
+    function updateCalculations() {
+      state.l1.A = parseFloat(inputA1.value);
+      state.l1.B = parseFloat(inputB1.value);
+      state.l1.C = parseFloat(inputC1.value);
+
+      state.l2.A = parseFloat(inputA2.value);
+      state.l2.B = parseFloat(inputB2.value);
+      state.l2.C = parseFloat(inputC2.value);
+
+      // Prevent non-lines (A and B cannot both be zero)
+      if (state.l1.A === 0 && state.l1.B === 0) state.l1.B = 1;
+      if (state.l2.A === 0 && state.l2.B === 0) state.l2.B = 1;
+
+      // Update text displays
+      dispA1.textContent = state.l1.A;
+      dispB1.textContent = state.l1.B;
+      dispC1.textContent = state.l1.C;
+      dispA2.textContent = state.l2.A;
+      dispB2.textContent = state.l2.B;
+      dispC2.textContent = state.l2.C;
+
+      labelEq1.textContent = `L₁: ${formatEquation(state.l1.A, state.l1.B, state.l1.C)}`;
+      labelEq2.textContent = `L₂: ${formatEquation(state.l2.A, state.l2.B, state.l2.C)}`;
+
+      // Calculate slopes: m = -A / B
+      const m1 = state.l1.B !== 0 ? (-state.l1.A / state.l1.B) : Infinity;
+      const m2 = state.l2.B !== 0 ? (-state.l2.A / state.l2.B) : Infinity;
+
+      slopeVal1.textContent = isFinite(m1) ? `Slope m₁ = ${m1.toFixed(2)}` : `Slope m₁ = ∞ (Vertical)`;
+      slopeVal2.textContent = isFinite(m2) ? `Slope m₂ = ${m2.toFixed(2)}` : `Slope m₂ = ∞ (Vertical)`;
+
+      // Perpendicular check values
+      const A1A2 = state.l1.A * state.l2.A;
+      const B1B2 = state.l1.B * state.l2.B;
+      const negB1B2 = -B1B2;
+      const sum = A1A2 + B1B2;
+
+      statA1A2.textContent = A1A2.toFixed(2);
+      statNegB1B2.textContent = negB1B2.toFixed(2);
+      statSum.textContent = sum.toFixed(2);
+
+      const EPS = 0.05;
+      const isPerpendicular = Math.abs(sum) < EPS;
+
+      // Parallel check: Cross-multiplication A1*B2 - A2*B1 == 0
+      const crossAB = state.l1.A * state.l2.B - state.l2.A * state.l1.B;
+      const isParallelDir = Math.abs(crossAB) < EPS;
+
+      let isCoincident = false;
+      if (isParallelDir) {
+        const crossAC = state.l1.A * state.l2.C - state.l2.A * state.l1.C;
+        const crossBC = state.l1.B * state.l2.C - state.l2.B * state.l1.C;
+        if (Math.abs(crossAC) < EPS && Math.abs(crossBC) < EPS) {
+          isCoincident = true;
+        }
+      }
+
+      // Angle between lines
+      let angle = 0;
+      if (isPerpendicular) {
+        angle = 90.0;
+      } else if (isParallelDir) {
+        angle = 0.0;
+      } else if (isFinite(m1) && isFinite(m2)) {
+        const tanTheta = Math.abs((m1 - m2) / (1 + m1 * m2));
+        angle = (Math.atan(tanTheta) * 180) / Math.PI;
+      } else {
+        const validM = isFinite(m1) ? m1 : m2;
+        angle = Math.abs(90 - Math.abs((Math.atan(validM) * 180) / Math.PI));
+      }
+
+      // Update feedback badge and verdict
+      if (isCoincident) {
+        statusBadge.className = "px-3 py-1.5 rounded-full text-xs font-bold bg-teal-100 text-teal-800 border border-teal-300";
+        statusBadge.textContent = "Coincident (Identical Lines)";
+        verdictBanner.className = "p-3 rounded-lg bg-teal-50 border border-teal-200 text-xs font-semibold text-teal-900";
+        verdictText.innerHTML = `🔗 <strong>Coincident Lines:</strong> A₁/A₂ = B₁/B₂ = C₁/C₂. Every single point on L₁ is also on L₂ (Infinitely many intersections).`;
+        statSum.className = "text-base font-bold font-mono text-teal-700";
+      } else if (isParallelDir) {
+        statusBadge.className = "px-3 py-1.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-300";
+        statusBadge.textContent = "Parallel (No Intersections)";
+        verdictBanner.className = "p-3 rounded-lg bg-amber-50 border border-amber-200 text-xs font-semibold text-amber-900";
+        verdictText.innerHTML = `⏸ <strong>Parallel Lines:</strong> A₁/A₂ = B₁/B₂ ≠ C₁/C₂. Slopes are identical ($m_1 = m_2$), but intercepts differ. The lines will never meet!`;
+        statSum.className = "text-base font-bold font-mono text-amber-700";
+      } else if (isPerpendicular) {
+        statusBadge.className = "px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300";
+        statusBadge.textContent = "Perpendicular (90° Angle)";
+        verdictBanner.className = "p-3 rounded-lg bg-emerald-50 border border-emerald-200 text-xs font-semibold text-emerald-900";
+        verdictText.innerHTML = `🎉 <strong>Perpendicular!</strong> A₁A₂ = -B₁B₂ (${A1A2.toFixed(1)} = ${negB1B2.toFixed(1)}). The angle between them is exactly <strong>90.0°</strong>!`;
+        statSum.className = "text-base font-bold font-mono text-emerald-600";
+      } else {
+        statusBadge.className = "px-3 py-1.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700 border border-slate-300";
+        statusBadge.textContent = `Intersecting at ${angle.toFixed(1)}°`;
+        verdictBanner.className = "p-3 rounded-lg bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-700";
+        verdictText.innerHTML = `📐 <strong>Intersecting:</strong> A₁A₂ + B₁B₂ = ${sum.toFixed(2)} ≠ 0. The lines meet at an acute angle of <strong>${angle.toFixed(1)}°</strong>.`;
+        statSum.className = "text-base font-bold font-mono text-slate-700";
+      }
+
+      renderCanvas();
+    }
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.resetTransform();
+      ctx.scale(dpr, dpr);
+      renderCanvas();
+    }
+
+    function renderCanvas() {
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
+      if (!width || !height) return;
+
+      ctx.clearRect(0, 0, width, height);
+
+      const range = 6;
+      const toScreenX = (x) => (x + range) * (width / (2 * range));
+      const toScreenY = (y) => height - (y + range) * (height / (2 * range));
+
+      // Grid lines
+      ctx.strokeStyle = '#1e293b';
+      ctx.lineWidth = 1;
+      for (let i = -range; i <= range; i++) {
+        // Vertical
+        ctx.beginPath();
+        ctx.moveTo(toScreenX(i), 0);
+        ctx.lineTo(toScreenX(i), height);
+        ctx.stroke();
+
+        // Horizontal
+        ctx.beginPath();
+        ctx.moveTo(0, toScreenY(i));
+        ctx.lineTo(width, toScreenY(i));
+        ctx.stroke();
+      }
+
+      // Primary Axes
+      ctx.strokeStyle = '#475569';
+      ctx.lineWidth = 1.75;
+      
+      // X-Axis
+      ctx.beginPath();
+      ctx.moveTo(0, toScreenY(0));
+      ctx.lineTo(width, toScreenY(0));
+      ctx.stroke();
+
+      // Y-Axis
+      ctx.beginPath();
+      ctx.moveTo(toScreenX(0), 0);
+      ctx.lineTo(toScreenX(0), height);
+      ctx.stroke();
+
+      // Axis Numbers
+      ctx.fillStyle = '#64748b';
+      ctx.font = '10px JetBrains Mono, monospace';
+      ctx.fillText('+4', toScreenX(4) - 6, toScreenY(0) + 14);
+      ctx.fillText('-4', toScreenX(-4) - 6, toScreenY(0) + 14);
+      ctx.fillText('+4', toScreenX(0) + 6, toScreenY(4) + 4);
+      ctx.fillText('-4', toScreenX(0) + 6, toScreenY(-4) + 4);
+
+      // Line renderer helper
+      function drawStraightLine(A, B, C, color, widthLine = 3) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = widthLine;
+        ctx.beginPath();
+
+        if (Math.abs(B) > 0.0001) {
+          const x1 = -range * 1.5;
+          const y1 = (-A * x1 - C) / B;
+          const x2 = range * 1.5;
+          const y2 = (-A * x2 - C) / B;
+          ctx.moveTo(toScreenX(x1), toScreenY(y1));
+          ctx.lineTo(toScreenX(x2), toScreenY(y2));
+        } else {
+          // Vertical line x = -C / A
+          const x = -C / A;
+          ctx.moveTo(toScreenX(x), 0);
+          ctx.lineTo(toScreenX(x), height);
+        }
+        ctx.stroke();
+      }
+
+      // Draw L1 (Cyan) and L2 (Rose)
+      drawStraightLine(state.l1.A, state.l1.B, state.l1.C, '#38bdf8', 3);
+      drawStraightLine(state.l2.A, state.l2.B, state.l2.C, '#fb7185', 3);
+
+      // Intersection calculation
+      const det = state.l1.A * state.l2.B - state.l2.A * state.l1.B;
+      if (Math.abs(det) > 0.01) {
+        const intX = (state.l1.B * state.l2.C - state.l2.B * state.l1.C) / det;
+        const intY = (state.l2.A * state.l1.C - state.l1.A * state.l2.C) / det;
+
+        const px = toScreenX(intX);
+        const py = toScreenY(intY);
+
+        if (px >= -20 && px <= width + 20 && py >= -20 && py <= height + 20) {
+          // Dot at intersection point
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.arc(px, py, 5, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.strokeStyle = '#0f172a';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+
+          // If perpendicular, draw the iconic right-angle square indicator
+          const perpSum = state.l1.A * state.l2.A + state.l1.B * state.l2.B;
+          if (Math.abs(perpSum) < 0.1) {
+            // Direction unit components using slope angle trigonometry
+            const theta1 = Math.atan2(-state.l1.A, state.l1.B);
+            const theta2 = Math.atan2(-state.l2.A, state.l2.B);
+
+            const sz = 16;
+            const u1x = Math.cos(theta1);
+            const u1y = -Math.sin(theta1);
+            const u2x = Math.cos(theta2);
+            const u2y = -Math.sin(theta2);
+
+            const cornerX = px + (u1x + u2x) * sz;
+            const cornerY = py + (u1y + u2y) * sz;
+
+            ctx.strokeStyle = '#10b981';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(px + u1x * sz, py + u1y * sz);
+            ctx.lineTo(cornerX, cornerY);
+            ctx.lineTo(px + u2x * sz, py + u2y * sz);
+            ctx.stroke();
+
+            ctx.fillStyle = '#10b981';
+            ctx.font = 'bold 12px Plus Jakarta Sans, sans-serif';
+            ctx.fillText('90°', cornerX + 5, cornerY + 4);
+          }
+        }
+      }
+    }
+
+    window.applyPreset = function(preset) {
+      if (preset === 'perpendicular') {
+        inputA1.value = 2; inputB1.value = -1; inputC1.value = -1;
+        inputA2.value = 1; inputB2.value = 2; inputC2.value = -2;
+      } else if (preset === 'parallel') {
+        inputA1.value = 2; inputB1.value = -3; inputC1.value = 3;
+        inputA2.value = 2; inputB2.value = -3; inputC2.value = -3;
+      } else if (preset === 'coincident') {
+        inputA1.value = 2; inputB1.value = 4; inputC1.value = -4;
+        inputA2.value = 1; inputB2.value = 2; inputC2.value = -2;
+      }
+      updateCalculations();
+    };
+
+    window.autoPerpendicularSnap = function() {
+      // For line A1*x + B1*y + C1 = 0, a perpendicular line has coefficients A2 = -B1, B2 = A1
+      inputA2.value = -state.l1.B;
+      inputB2.value = state.l1.A;
+      updateCalculations();
+    };
+
+    const quizAnswers = {
+      1: {
+        correct: 'A',
+        explanation: 'For perpendicular lines, A₁A₂ = -B₁B₂. Here A₁ = 3, B₁ = -4, A₂ = k, B₂ = 6. Thus: 3(k) = -((-4) × 6) ⟹ 3k = 24 ⟹ k = 8.'
+      },
+      2: {
+        correct: 'B',
+        explanation: 'Check coefficient ratios: A₁/A₂ = 2/4 = 1/2, and B₁/B₂ = 5/10 = 1/2. However, C₁/C₂ = -3/9 = -1/3. Since A₁/A₂ = B₁/B₂ ≠ C₁/C₂, they are distinct parallel lines (no intersections).'
+      },
+      3: {
+        correct: 'C',
+        explanation: 'From Example 4.18(c), two lines are coincident (infinitely many intersections) if and only if all coefficient ratios are equal: A₁/A₂ = B₁/B₂ = C₁/C₂.'
+      },
+      4: {
+        correct: 'B',
+        explanation: 'For 5x - 2y + 8 = 0, slope m₁ = -A₁/B₁ = -5/(-2) = 5/2. Any perpendicular line must have negative reciprocal slope: m₂ = -1/m₁ = -2/5.'
+      }
+    };
+
+    const userScores = { 1: false, 2: false, 3: false, 4: false };
+
+    window.checkAnswer = function(qNum, selectedOption, btnElement) {
+      const qData = quizAnswers[qNum];
+      const isCorrect = (selectedOption === qData.correct);
+
+      // Disable buttons for this question
+      const buttons = document.querySelectorAll(`.q-opt-${qNum}`);
+      buttons.forEach(b => {
+        b.disabled = true;
+        b.classList.remove('hover:bg-slate-100');
+      });
+
+      const explainBox = document.getElementById(`q${qNum}Explain`);
+      const statusBadge = document.getElementById(`q${qNum}Status`);
+
+      if (isCorrect) {
+        btnElement.classList.add('bg-emerald-100', 'border-emerald-400', 'text-emerald-900', 'font-bold');
+        statusBadge.textContent = '✓ Correct';
+        statusBadge.className = 'text-xs font-bold text-emerald-600';
+        explainBox.className = 'p-3 rounded-lg text-xs leading-relaxed bg-emerald-50 border border-emerald-200 text-emerald-900';
+        explainBox.innerHTML = `<strong>Correct!</strong> ${qData.explanation}`;
+        userScores[qNum] = true;
+      } else {
+        btnElement.classList.add('bg-rose-100', 'border-rose-400', 'text-rose-900', 'font-bold');
+        statusBadge.textContent = '✗ Incorrect';
+        statusBadge.className = 'text-xs font-bold text-rose-600';
+        explainBox.className = 'p-3 rounded-lg text-xs leading-relaxed bg-rose-50 border border-rose-200 text-rose-900';
+        explainBox.innerHTML = `<strong>Incorrect.</strong> Option ${qData.correct} is correct. ${qData.explanation}`;
+        userScores[qNum] = false;
+      }
+
+      explainBox.classList.remove('hidden');
+
+      // Update score display
+      const totalScore = Object.values(userScores).filter(Boolean).length;
+      document.getElementById('quizScore').textContent = `${totalScore} / 4`;
+    };
+
+    // Event Listeners for Sliders
+    [inputA1, inputB1, inputC1, inputA2, inputB2, inputC2].forEach(slider => {
+      slider.addEventListener('input', updateCalculations);
+    });
+
+    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('load', () => {
+      resizeCanvas();
+      updateCalculations();
+    });
+  </script>
+</body>
+</html>
